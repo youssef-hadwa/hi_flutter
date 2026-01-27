@@ -7,5 +7,5 @@ void main() {
 
   runApp(
       // Root widget of the application
-      MyApp());
+      const MyApp());
 }

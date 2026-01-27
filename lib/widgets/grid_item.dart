@@ -5,13 +5,15 @@
 ///
 ///
 import 'package:flutter/material.dart';
+import 'package:hi_flutter/models/item_model.dart';
 
 class CustomGridItem extends StatelessWidget {
-  final String title;
-  final String imagePath;
+  final ItemModel item;
 
-  const CustomGridItem(
-      {super.key, required this.title, required this.imagePath});
+  const CustomGridItem({
+    required this.item,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +21,9 @@ class CustomGridItem extends StatelessWidget {
       alignment: Alignment.bottomRight,
       children: [
         Image.asset(
-          imagePath,
+          item.imagePath,
           height: 150,
-          // width: 200,
+          width: 200,
           fit: BoxFit.fill,
         ),
         Container(
@@ -30,7 +32,7 @@ class CustomGridItem extends StatelessWidget {
           color: Color.fromRGBO(147, 122, 245, 0.5),
           child: Center(
             child: Text(
-               title,
+              item.title,
               // textAlign: TextAlign.center,
               style: TextStyle(fontSize: 22, color: Colors.white),
             ),

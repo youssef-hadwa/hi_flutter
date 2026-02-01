@@ -8,6 +8,13 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+//  GlobalKey  key = GlobalKey<FormState>();
+
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  TextEditingController emailController = TextEditingController();
+
+  late String value;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,6 +87,7 @@ class _LoginViewState extends State<LoginView> {
                 //     },
                 //     child: const Text('Add Photo',
                 //         style: TextStyle(color: Colors.white70))),
+
                 const SizedBox(height: 60),
                 const Text(
                   'MOMENTUM',
@@ -152,84 +160,87 @@ class _LoginViewState extends State<LoginView> {
                   ],
                 ),
                 const SizedBox(height: 50),
-
-                TextField(
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.email,
-                      color: Colors.white,
-                    ),
-                    hintText: ' Enter your Email',
-                    hintStyle: TextStyle(color: Colors.white54),
-// when textfield is active
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    enabled: false,
-                    // can press on it
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.white54),
-                    ),
-
-                    // border globally
-
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-
-                // const TextField(
-                //   style: TextStyle(color: Colors.white),
-                //   decoration: InputDecoration(
-                //     prefixIcon: Icon(Icons.email, color: Colors.white70),
-                //     hintText: 'Enter your Email',
-                //     hintStyle: TextStyle(color: Colors.white54),
-                //     enabledBorder: UnderlineInputBorder(
-                //       borderSide: BorderSide(color: Colors.white54),
-                //     ),
-                //     focusedBorder: UnderlineInputBorder(
-                //       borderSide: BorderSide(color: Colors.white),
-                //     ),
-                //   ),
-                // ),
-                // const SizedBox(height: 30),
-                // const TextField(
-                //   obscureText: true,
-                //   style: TextStyle(color: Colors.white),
-                //   decoration: InputDecoration(
-                //     prefixIcon: Icon(Icons.lock, color: Colors.white70),
-                //     hintText: 'Enter a Password',
-                //     hintStyle: TextStyle(color: Colors.white54),
-                //     enabledBorder: UnderlineInputBorder(
-                //       borderSide: BorderSide(color: Colors.white54),
-                //     ),
-                //     focusedBorder: UnderlineInputBorder(
-                //       borderSide: BorderSide(color: Colors.white),
-                //     ),
-                //   ),
-                // ),
-                const SizedBox(height: 60),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'SIGN UP',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+// form
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        // errorbuilder: (context, error) => Text(error, style: const TextStyle(color: Colors.white),),
+                        controller: emailController,
+                        validator: (value) {
+                          print('value is $value');
+                          value = value;
+                        },
+                        //   if (value == null || value.isEmpty) {
+                        //     return ' Please enter your email';
+                        //   } else if (!value.contains('@')) {
+                        //     return ' Please enter a valid email';
+                        //   }
+                        // },
+                        // controller:
+                        // validator: (value) {
+                        //   print('value is $value');
+                        // },
+                        cursorColor: Colors.white,
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.email, color: Colors.white),
+                            hintText: ' Enter your Email',
+                            hintStyle: TextStyle(color: Colors.white54),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(color: Colors.white54),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(color: Colors.white54),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(color: Colors.white54),
+                            ),
+                            error: validate(),
+                            // error: (!formKey.currentState!.validate())
+                            //     ? Row(children: [
+                            //         Icon(
+                            //           Icons.error,
+                            //           color: Colors.red,
+                            //         ),
+                            //       ])
+                            //     : null,
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(color: Colors.red),
+                            )),
                       ),
-                    ),
+                      SizedBox(height: 20),
+                      const SizedBox(height: 60),
+                      GestureDetector(
+                        onTap: () {
+                          if (formKey.currentState!.validate()) {
+                            print('  email is ${emailController.text}');
+                          }
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'SIGN UP',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -238,5 +249,34 @@ class _LoginViewState extends State<LoginView> {
         ),
       ),
     );
+  }
+
+  Widget validate() {
+    if (!formKey.currentState!.validate()) {
+      if (value == null || value.isEmpty) {
+        return Row(children: [
+          Icon(
+            Icons.error,
+            color: Colors.red,
+          ),
+          Text(
+            " enter a email",
+            style: TextStyle(color: Colors.red),
+          )
+        ]);
+      } else if (!value.contains('@')) {
+        return Row(children: [
+          Icon(
+            Icons.error,
+            color: Colors.red,
+          ),
+          Text(
+            " enter a valid email",
+            style: TextStyle(color: Colors.red),
+          )
+        ]);
+      }
+    }
+    return Container();
   }
 }
